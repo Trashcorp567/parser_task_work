@@ -40,7 +40,7 @@ class HeadHunterAPI(VacancyAPI):
     """
 
     @classmethod
-    def get_vacancies(cls, per_page=50, page=1, text=None):
+    def get_data(cls, per_page=50, page=1, text=None):
         """
         Метод для фильтрации полученных данных
         """
@@ -71,7 +71,7 @@ class SuperJobAPI(VacancyAPI):
     base_url = "https://api.superjob.ru/2.0"
 
     @staticmethod
-    def get_vacancies(page=0, count=20, keyword=None):
+    def get_data(page=0, count=20, keyword=None):
         """
         Метод для фильтрации полученных данных
         Параметры запроса меняются в самом блоке интеракция с пользователем
@@ -120,7 +120,7 @@ class Vacancy:
             for vacancy_data in data["items"]:
                 name = vacancy_data.get('name')
                 link = vacancy_data.get('alternate_url')
-                if vacancy_data['salary'] != 0 or None:
+                if vacancy_data['salary'] != 0:
 
                     try:
                         salary = vacancy_data['salary'].get('from')
@@ -233,7 +233,7 @@ def interact():
     if platform_choice == "HH":
         text = input("Введите текст поискового запроса: ")
         # Получение вакансий с использованием введенных пользователем данных
-        hh_api = HeadHunterAPI.get_vacancies(text=text)
+        hh_api = HeadHunterAPI.get_data(text=text)
         # Проверка наличия вакансий
         if hh_api and 'items' in hh_api:
             filtered_vacancies = [item for item in hh_api['items'] if text.lower() in item['name'].lower()]
@@ -254,7 +254,7 @@ def interact():
         user_choice = input("Введите наименование вакансии: ")
         count = int(input("Введите количество вакансий для просмотра: "))
         # Получение вакансий с использованием введенных пользователем данных
-        super_job_api = SuperJobAPI.get_vacancies(page=0, count=count, keyword=user_choice)
+        super_job_api = SuperJobAPI.get_data(page=0, count=count, keyword=user_choice)
         if super_job_api:
             JSONVacancy.save_vacancy_for_sj(super_job_api)
             # Инициализациия атрибутами класс Vacancy и присвоение их объекту
