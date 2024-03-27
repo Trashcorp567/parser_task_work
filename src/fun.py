@@ -18,19 +18,7 @@ class VacancySaver(ABC):
     Абстрактный класс обязывающий реализовать методы записи json
     """
     @abstractmethod
-    def save_vacancy(self):
-        pass
-
-    @abstractmethod
-    def update_vacancy(self):
-        pass
-
-    @abstractmethod
-    def delete_vacancy(self):
-        pass
-
-    @abstractmethod
-    def get_vacancy(self):
+    def get_data(self):
         pass
 
 
